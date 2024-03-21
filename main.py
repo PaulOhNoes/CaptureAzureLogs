@@ -2,7 +2,7 @@ import os
 import ftplib
 from datetime import datetime
 from dotenv import load_dotenv
-from utils import sort_log
+from utils import get_latest_files, get_all_dates
 
 load_dotenv()  # take environment variables from .env.
 
@@ -15,12 +15,23 @@ print("username", username)
 
 filenames = []
 logs_directory_path = os.path.join(os.getcwd(), "logs")
+last_checked_path = os.path.join(logs_directory_path, "last_check.txt")
+last_checked_date = ""
 
 now = datetime.now()
 dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 
 print("Script ran at", dt_string)
 print("Log directory", logs_directory_path)
+
+
+# Make logs directory if it does not exist
+if(not os.path.exists(logs_directory_path)):
+  os.mkdir(logs_directory_path)
+
+# Make last_check.txt if it does not exist
+if(not os.path.exists(last_checked_path)):
+  open(last_checked_path, "x").close()
 
 # Create ftp instance
 ftp = ftplib.FTP(hostname)
@@ -36,12 +47,21 @@ for file in ftp.nlst():
   if(".log" in file and "default_docker" in file):
     filenames.append(file)
 
-# sort logs by the date and section in descending order
-filenames.sort(key=sort_log, reverse=True)
+# get last date checked
+with open(last_checked_path, "r") as file:
+  last_checked_date = file.readline()
 
-# Make logs directory if it does not exist
-if(not os.path.exists(logs_directory_path)):
-  os.mkdir(logs_directory_path)
+filenames = get_latest_files(filenames, last_checked_date)
+
+# delete incomplete logs
+incomplete_logs = get_all_dates(filenames)
+
+if(last_checked_date is not None and last_checked_date != ""):
+  for file in incomplete_logs:
+    try:
+      os.remove(os.path.join(logs_directory_path, f"{file}.log"))
+    except Exception as error:
+      print(f"Could not delete incomplete {file}.log")
 
 # Download files and squash them into a new log file
 for file in filenames:
@@ -67,10 +87,18 @@ for file in filenames:
   except Exception as error:
     print("Error: ", error)
 
-
 # Delete azure logs
 for file in filenames:
     os.remove(os.path.join(logs_directory_path, file))
+
+# stamp with the day before
+with open(last_checked_path, "w") as file:
+  try:
+    file.write(get_all_dates(filenames)[1])
+  except IndexError:
+    file.write(last_checked_date)
+
+  file.truncate()
 
 # Close connection
 ftp.quit()
