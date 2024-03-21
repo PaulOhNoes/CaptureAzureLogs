@@ -32,7 +32,7 @@ ftp.cwd("/LogFiles")
 
 # Append filenames 
 for line in ftp.nlst():
-  if(".log" in line):
+  if(".log" in line and not "default" in line):
     filenames.append(line)
 
 # Make logs directory if it does not exist
