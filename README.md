@@ -1,4 +1,8 @@
-\*\*\* Python INSTRUCTIONS
+RELEASES
+  - Release 1.0.0: Download all default_docker logs
+  - Release 2.0.0: Download and merge log files by date
+
+\*\*\* PYTHON INSTRUCTIONS
 
 - Run file
   `Python3 main.py`
