@@ -4,7 +4,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 from utils import get_latest_files, get_all_dates
 
-load_dotenv()  # take environment variables from .env.
+load_dotenv()  # take environment variables from .env
 
 # Credentials
 hostname = os.getenv("hostname")
