@@ -1,6 +1,8 @@
 import ftplib
+from datetime import datetime
 import os
 from constants import logs_directory_path, hostname, password, username
+from utils import sort_log_lines
 
 class FTP:
   def __init__(self):
@@ -29,33 +31,49 @@ class FTP:
     return logs
   
   def generate_logs(self, filenames):
+    files_by_days = {}
+
     for file in filenames:
-      try:
-        print("Downloading " + file)
+      date = file[0:10]
+      if( date in files_by_days):
+        files_by_days[date].append(file)
+      else:
+        files_by_days[date] = [file]
+    
+    for date in files_by_days:
+      log_lines = []
 
-        # download azure logs
-        with open(os.path.join(logs_directory_path, file), "wb") as f:
-          self.ftp.retrbinary('RETR ' + file, f.write)
+      new_log_file_path = os.path.join(logs_directory_path, f"{date}.log")
+          
+      # create new log file
+      if(not os.path.exists(new_log_file_path)):
+        open(new_log_file_path, "x").close()
 
-        new_log_file_path = os.path.join(logs_directory_path, f"{file[0:10]}.log")
+      for filename in files_by_days[date]:
+        try:
+          print("Downloading " + filename)
+
+          # download azure logs
+          with open(os.path.join(logs_directory_path, filename), "wb") as f:
+            self.ftp.retrbinary('RETR ' + filename, f.write)
+
+          # append azure logs into new log file
+          with open(os.path.join("logs", filename), "r") as azure_log:
+            log_lines = log_lines + azure_log.readlines()
         
-        # create new log file
-        if(not os.path.exists(new_log_file_path)):
-          open(new_log_file_path, "x").close()
+        except Exception as error:
+          print("Error: ", error)
         
-        # append azure logs into new log file
-        with open(new_log_file_path, "a") as log:
-          with open(os.path.join("logs", file), "r") as azure_log:
-            log.write(f"--- merging {file} ---\n")
-            log.writelines(azure_log.readlines())
-        
-      except Exception as error:
-        print("Error: ", error)
-      
-      finally:
-        # delete downloaded azure log
-        os.remove(os.path.join(logs_directory_path, file))
-  
+        finally:
+          # delete downloaded azure log
+          os.remove(os.path.join(logs_directory_path, filename))
+
+      log_lines = sort_log_lines(log_lines)
+
+      # populate log file
+      with open(new_log_file_path, "a") as log:
+        log.writelines(log_lines)
+
   def close(self):
     self.ftp.quit()
     print("Connection closed.")

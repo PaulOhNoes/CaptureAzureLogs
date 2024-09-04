@@ -2,6 +2,18 @@ import os
 from datetime import datetime
 from constants import last_checked_path, logs_directory_path
 
+def sorter(string):
+  try:
+    iso_timestamp = string[0:28] 
+    return datetime.fromisoformat(iso_timestamp).timestamp()
+  except:
+    return 0 
+
+def sort_log_lines(lines):
+  sorted_lines = lines.copy()
+  sorted_lines = sorted(sorted_lines, key=sorter)
+  return sorted_lines
+
 def sort_log(string):
   date = string[0:10] 
   section = 0 
