@@ -11,7 +11,7 @@ def main():
   client.cwd("/LogFiles")
 
   filenames = filter_files(client.get_log_list())
-  
+
   # Make logs directory if it does not exist
   if(not os.path.exists(logs_directory_path)):
     os.mkdir(logs_directory_path)
@@ -25,6 +25,7 @@ if __name__ == "__main__":
   now = datetime.now()
   dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 
+  print("release/3.0.1")
   print("Script ran at", dt_string)
   main()
   print("Script successful!")

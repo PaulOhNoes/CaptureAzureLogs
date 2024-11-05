@@ -70,8 +70,8 @@ def stamp_last_checked(filenames):
   last_checked_date = get_last_checked_date()
   with open(last_checked_path, "w") as file:
     try:
-      # update file with the day before
-      file.write(get_all_dates(filenames)[1])
+      # update file with the 2nd day before
+      file.write(get_all_dates(filenames)[2])
     except IndexError:
       file.write(last_checked_date)
 

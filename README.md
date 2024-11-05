@@ -1,6 +1,8 @@
 RELEASES
-  - Release 1.0.0: Download all default_docker logs
-  - Release 2.0.0: Download and merge log files by date
+
+- Release 1.0.0: Download all default_docker logs
+- Release 2.0.0: Download and merge log files by date
+- Release 3.0.1: Now supports multiple instances
 
 \*\*\* PYTHON INSTRUCTIONS
 
