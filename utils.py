@@ -10,9 +10,7 @@ def sorter(string):
     return 0 
 
 def sort_log_lines(lines):
-  sorted_lines = lines.copy()
-  sorted_lines = sorted(sorted_lines, key=sorter)
-  return sorted_lines
+  return sorted(lines, key=sorter)
 
 def sort_log(string):
   date = string[0:10] 

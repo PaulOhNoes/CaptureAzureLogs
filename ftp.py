@@ -48,6 +48,9 @@ class FTP:
       # create new log file
       if(not os.path.exists(new_log_file_path)):
         open(new_log_file_path, "x").close()
+      else:
+        with open(new_log_file_path, "r+") as file:
+          file.truncate(0)
 
       for filename in files_by_days[date]:
         try:
@@ -67,8 +70,10 @@ class FTP:
         finally:
           # delete downloaded azure log
           os.remove(os.path.join(logs_directory_path, filename))
-
+          
       log_lines = sort_log_lines(log_lines)
+
+      log_lines = [line for line in log_lines if line.strip() != ""]
 
       # populate log file
       with open(new_log_file_path, "a") as log:
