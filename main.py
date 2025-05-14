@@ -25,7 +25,7 @@ if __name__ == "__main__":
   now = datetime.now()
   dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 
-  print("release/3.0.0")
+  print("release/3.0.1")
   print("Script ran at", dt_string)
   main()
   print("Script successful!")
