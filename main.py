@@ -21,7 +21,7 @@ def main():
     deduped_log_lines = list(set(logs_by_days[date]))
     sorted_log_lines = sort_log_lines(deduped_log_lines)
     
-    new_log_file_path = os.path.join(logs_directory_path, f"{date}-new.log")
+    new_log_file_path = os.path.join(logs_directory_path, f"{date}.log")
 
     # create or replace the old log file
     with open (new_log_file_path, "w") as file:
