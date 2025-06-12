@@ -7,11 +7,11 @@ RELEASES
 
 \*\*\* ENV STRUCTURE
 
-`hostname=[ftp server]`
-`username=]ftp username`
-`password=[ftp password]`
+- `hostname=[ftp server]`
+- `username=]ftp username`
+- `password=[ftp password]`
 
-- if you're using multiple hostname/usernames/password then seperate with a semicolon ;
+- if you're using multiple hostnames/usernames/passwords then seperate with a semicolon ;
 
 \*\*\* PYTHON INSTRUCTIONS
 
