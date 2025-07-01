@@ -3,11 +3,10 @@ from datetime import datetime, date, timedelta
 from constants import last_checked_path
 
 def sorter(string):
-  try:
-    iso_timestamp = string[0:28] 
-    return datetime.fromisoformat(iso_timestamp).timestamp()
-  except:
-    return 0 
+  if(string[0:28] == "\n"):
+    return 0
+  iso_timestamp = string[0:28] 
+  return datetime.fromisoformat(iso_timestamp).timestamp()
 
 def sort_log_lines(lines):
   return sorted(lines, key=sorter)
