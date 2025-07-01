@@ -1,24 +1,28 @@
-RELEASES
+# REQUIREMENTS
+
+Python 3.11 or Above
+
+# RELEASES
 
 - Release 1.0.0: Download all default_docker logs
 - Release 2.0.0: Download and merge log files by date
 - Release 3.0.0: Supports multiple instances
 - Release 4.0.0: Supports multiple slots / ftp servers
 
-\*\*\* ENV STRUCTURE
+# ENV STRUCTURE
 
 - `hostname=[ftp server]`
 - `username=]ftp username`
 - `password=[ftp password]`
 
-- if you're using multiple hostnames/usernames/passwords then seperate with a semicolon ;
+- if you're using multiple hostnames/usernames/passwords then seperate them with a semicolon ;
 
-\*\*\* PYTHON INSTRUCTIONS
+# PYTHON INSTRUCTIONS
 
 - Run file with env file
   `Python3 main.py`
 
-\*\*\* DOCKER INSTRUCTIONS
+# DOCKER INSTRUCTIONS
 
 - BUILD IMAGE
   `docker build . -t get-logs`
